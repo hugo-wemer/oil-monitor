@@ -347,8 +347,8 @@ const data = {
   datasets: [
     {
       label: 'Relative saturation',
-      backgroundColor: ['rgb(255, 0, 0)'],
-      borderColor: 'rgb(255, 0, 0)',
+      backgroundColor: ['rgb(3, 219, 252)'],
+      borderColor: 'rgb(3, 219, 252)',
       data: rsData,
       pointRadius: 0,
       borderWidth: 1.5,
@@ -356,18 +356,27 @@ const data = {
     },
     {
       label: 'Relative saturation at reference temperature',
-      backgroundColor: ['rgb(0, 255, 0)'],
-      borderColor: 'rgb(0, 255, 0)',
+      backgroundColor: ['rgb(230, 124, 25)'],
+      borderColor: 'rgb(230, 124, 25)',
       data: rsDataAtRef,
       pointRadius: 0,
       borderWidth: 1.5,
       fill: false,
     },
     {
-      label: 'h2o',
+      label: 'H2O',
       backgroundColor: ['rgb(0, 0, 255)'],
       borderColor: 'rgb(0, 0, 255)',
       data: h2o,
+      pointRadius: 0,
+      borderWidth: 1.5,
+      fill: false,
+    },
+    {
+      label: 'Temperature',
+      backgroundColor: ['rgb(255, 0, 255)'],
+      borderColor: 'rgb(255, 0, 255)',
+      data: tmp,
       pointRadius: 0,
       borderWidth: 1.5,
       fill: false,
@@ -376,9 +385,11 @@ const data = {
 }
 
 const config = {
+  height: 5,
   type: 'line',
   data: data,
   options: {
+    maintainAspectRatio: false,
     interaction: {
       intersect: false,
       mode: 'nearest',
@@ -410,4 +421,4 @@ const config = {
   },
 }
 
-const myChart = new Chart(document.getElementById('myChart'), config)
+const chart = new Chart(document.getElementById('myChart'), config)

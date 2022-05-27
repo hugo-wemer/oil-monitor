@@ -2,9 +2,9 @@ body{
     background-image: linear-gradient(65deg, #1A2434, #3A5265);
 }
 div{
-    margin: auto auto;
-}
+    margin: auto auto;}
 canvas{
+  height: 100%;
   background-color: lightgray;
   border-radius: 0.9rem;
   box-shadow: #1A2434;
