@@ -401,6 +401,12 @@ const config = {
         },
       },
     },
+    plugins: {
+      title: {
+          display: true,
+          text: 'Amostragem - MO'
+      }
+  }
   },
 }
 
