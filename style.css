@@ -1,15 +1,1 @@
-.ct-series-a{
-}
 
-.ct-series-a .ct-line{
-    stroke-width: 2px;
-    stroke: #008242 ;
-}
-.ct-series-a .ct-point{
-    stroke: #000;
-    stroke-width: 5px;
-}
-.ct-label{
-    font-size: xx-small;
-    color: red;
-  }
