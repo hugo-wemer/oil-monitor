@@ -41,15 +41,15 @@ function constant(period){
             backgroundColor: ['rgb(0, 130, 66)'],
             borderColor: 'rgb(0, 130, 66)',
             data: dataSeries,
-            pointRadius: 0.3,
+            pointRadius: 1.3,
             borderWidth: 1.5,
         },
         {
             label: 'Alarme',
-            backgroundColor: ['rgb(0, 130, 66)'],
+            backgroundColor: ['rgb(255, 0, 0)'],
             borderColor: 'rgb(255, 0, 0)',
             data: xxx,
-            pointRadius: 0.3,
+            pointRadius: 0,
             borderWidth: 1.5,
         }]
     };
@@ -62,6 +62,7 @@ function constant(period){
                 min: -20,
                 max: 100
             }
+
         },
         
         }
