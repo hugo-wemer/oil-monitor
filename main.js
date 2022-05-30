@@ -11,6 +11,7 @@ const { app, BrowserWindow } = require('electron');
     mainWindow.loadFile('index.html')
 
     createWindow()
+
   })
 
   app.on('window-all-closed', () => {
