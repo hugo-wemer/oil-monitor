@@ -64,6 +64,7 @@
     "mkdirp": "^0.5.6",
     "modbus-serial": "^8.0.5",
     "ms": "^2.1.2",
+    "mssql": "^8.1.2",
     "normalize-url": "^4.5.1",
     "npm-conf": "^1.1.3",
     "object-keys": "^1.1.1",

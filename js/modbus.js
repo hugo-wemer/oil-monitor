@@ -1,17 +1,31 @@
-const ModbusRTU = require("modbus-serial");
-const client = new ModbusRTU();
-// open connection to a serial port
-client.setID(1);
+ const ModbusRTU = require("modbus-serial");
+ const client = new ModbusRTU();
+ client.setID(2);
+ client.connectRTUBuffered("COM6", { baudRate: 9600 });
+ //client.open();
+ let arrayData = [];
+ let array2Data = [];
+ setTimeout(function(){
+                client.readHoldingRegisters(5, 1, function(err, data){
+                arrayData.push(data.data[0])
+                console.log(arrayData);
+                })
 
-client.connectRTUBuffered("/dev/ttyUSB0", { baudRate: 9600 });
+            }, 2000)
 
-let arrayData = [];
-setInterval(function(){
-    client.readHoldingRegisters(5, 1, function(err, data){
-        arrayData.push(data.data[0])
-        console.log(arrayData);
-    })
+//setTimeout(function(){
+//    client.close();
+//},3000)
 
-},2000)
+//client.open();
+ setTimeout(function(){
+                client.readHoldingRegisters(1000, 1, function(err, data){
+                array2Data.push(data.data[0])
+                console.log(array2Data);
+                })
 
-//console.log(read.value)
+            }, 2000)
+            
+// setTimeout(function(){
+//     client.close();
+// },3000)
