@@ -2,7 +2,7 @@ const fs = require('fs')
 const ModbusRTU = require('modbus-serial')
 const client = new ModbusRTU()
 client.setID(5)
-client.connectRTUBuffered('/dev/ttyUSB0', { baudRate: 9600 })
+client.connectRTUBuffered('COM5', { baudRate: 9600 })
 
 const db = './log.json'
 const interval = 0.05 //intervalo entre amostras (minutos)
@@ -43,9 +43,12 @@ setInterval(async function () {
       if (resultIndications.data[7] >= 4) {       // maior ou igual a quatro pois é o valor que representa o relé de autodiag (0000100 = 4)
         dbData[0].indications.alarms.selfdiag.splice(0, 1)
         dbData[0].indications.alarms.selfdiag.push(1)
+      } else{
+        dbData[0].indications.alarms.selfdiag.splice(0, 1)
+        dbData[0].indications.alarms.selfdiag.push(0)
       }
 
-      let alarms = resultIndications.data[8]
+      let alarms = resultIndications.data[9]
       //console.log("alarmes =>" + alarms)
       alarms = alarms.toString(2)
       alarms = alarms.split('')
@@ -59,6 +62,7 @@ setInterval(async function () {
       ]
       let i = alarms.length - 1
       alarmItems.forEach((item) => {
+        console.log(alarmItems)
         if (alarms[i] == true) {
           item.splice(0, 1)
           item.push(1)
