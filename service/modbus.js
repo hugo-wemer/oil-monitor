@@ -1,22 +1,79 @@
-const ModbusRTU = require("modbus-serial");
-const client = new ModbusRTU();
-client.setID(2);
-client.connectRTUBuffered("/dev/ttyUSB0", { baudRate: 9600 });
+const fs = require('fs')
+const ModbusRTU = require('modbus-serial')
+const client = new ModbusRTU()
+client.setID(5)
+client.connectRTUBuffered('COM5', { baudRate: 9600 })
 
-const interval = 15; //intervalo entre amostras (minutos)
-setInterval(async function(){
+const db = './log.json'
+const interval = 0.05 //intervalo entre amostras (minutos)
 
-    let indications = [];
-    let params = [];
+setInterval(async function () {
+  let indications = []
+  let params = []
 
-    params.push( await client.readHoldingRegisters(0,5) );
-    params.forEach(result => {
-        console.log(result.data)
-    }) 
-    indications.push( await client.readHoldingRegisters(1000,10) );
-    indications.forEach(result => {
-       console.log(result.data)
+  params.push(await client.readHoldingRegisters(0, 5)) // params = [{data:[], buffer:<>}]
+  params.forEach((resultParams) => {
+    // resultParams = {data:[], buffer:<>}
+    fs.readFile(db, 'utf8', (err, currentJSON) => {
+      let dbData = JSON.parse(currentJSON)
+      dbData[0].parameters.rsa.splice(0, 1)
+      dbData[0].parameters.rsa.push(resultParams.data[0])
+      dbData[0].parameters.rsma.splice(0, 1)
+      dbData[0].parameters.rsma.push(resultParams.data[1])
+      dbData[0].parameters.h2oa.splice(0, 1)
+      dbData[0].parameters.h2oa.push(resultParams.data[2])
+      dbData[0].parameters.h2oma.splice(0, 1)
+      dbData[0].parameters.h2oma.push(resultParams.data[3])
+      dbData[0].parameters.tha.splice(0, 1)
+      dbData[0].parameters.tha.push(resultParams.data[4])
+      fs.writeFile(db, JSON.stringify(dbData), (err, data) => {})
     })
+  })
+  indications.push(await client.readHoldingRegisters(1000, 10))
+  indications.forEach((resultIndications) => {
+    fs.readFile(db, 'utf8', (err, currentJSON) => {
+      let dbData = JSON.parse(currentJSON)
+      dbData[0].indications.measurements.rs.push(resultIndications.data[0])
+      dbData[0].indications.measurements.rstr.push(resultIndications.data[1])
+      dbData[0].indications.measurements.h2o.push(resultIndications.data[3])
+      dbData[0].indications.measurements.temp.push(resultIndications.data[4])
+      dbData[0].indications.measurements.trend.push(resultIndications.data[5])
+      dbData[0].indications.measurements.temp2.push(resultIndications.data[6])
 
-},1000*60*interval)
+      if (resultIndications.data[7] >= 4) {       // maior ou igual a quatro pois é o valor que representa o relé de autodiag (0000100 = 4)
+        dbData[0].indications.alarms.selfdiag.splice(0, 1)
+        dbData[0].indications.alarms.selfdiag.push(1)
+      } else{
+        dbData[0].indications.alarms.selfdiag.splice(0, 1)
+        dbData[0].indications.alarms.selfdiag.push(0)
+      }
 
+      let alarms = resultIndications.data[9]
+      //console.log("alarmes =>" + alarms)
+      alarms = alarms.toString(2)
+      alarms = alarms.split('')
+      let alarm = dbData[0].indications.alarms
+      let alarmItems = [
+        alarm.rsa,
+        alarm.rsma,
+        alarm.h2oa,
+        alarm.h2oma,
+        alarm.trend,
+      ]
+      let i = alarms.length - 1
+      alarmItems.forEach((item) => {
+        console.log(alarmItems)
+        if (alarms[i] == true) {
+          item.splice(0, 1)
+          item.push(1)
+        } else {
+          item.splice(0, 1)
+          item.push(0)
+        }
+        i--
+      })
+
+      fs.writeFile(db, JSON.stringify(dbData), (err, data) => {})
+    })
+  })
+}, 1000 * 60 * interval)

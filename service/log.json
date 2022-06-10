@@ -1,0 +1,29 @@
+[
+  {
+    "indications": {
+      "alarms": {
+        "rsa": [],
+        "rsma": [],
+        "h2oa": [],
+        "h2oma": [],
+        "trend": [],
+        "selfdiag": []
+      },
+      "measurements": {
+        "rs": [],
+        "rstr": [],
+        "h2o": [],
+        "temp": [],
+        "trend": [],
+        "temp2": []
+      }
+    },
+    "parameters": {
+      "rsa": [],
+      "rsma": [],
+      "h2oa": [],
+      "h2oma": [],
+      "tha": []
+    }
+  }
+]
