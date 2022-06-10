@@ -2,7 +2,7 @@ const fs = require('fs')
 const ModbusRTU = require('modbus-serial')
 const client = new ModbusRTU()
 client.setID(5)
-client.connectRTUBuffered('COM5', { baudRate: 9600 })
+client.connectRTUBuffered('/dev/ttyUSB1', { baudRate: 9600 })
 
 const db = './log.json'
 const interval = 0.05 //intervalo entre amostras (minutos)
