@@ -1,20 +1,38 @@
 {
 
   "name": "oil-monitor",
+
   "version": "1.0.0",
+
   "description": "Oil monitor reader",
+
   "main": "main.js",
+
   "author": "Hugo Wemer and Daniel Savio",
+
   "license": "MIT",
 
   "devDependencies": {
+
     "electron": "^19.0.3"
+
   },
+
   "dependencies": {
+
     "chart.js": "^3.8.0",
+
+    "electron-reloader": "^1.2.3",
+
     "modbus-serial": "^8.0.5"
+
   },
+
   "scripts": {
+
     "start": "electron ."
+
   }
+
 }
+

@@ -111,7 +111,6 @@ function ajax_get(url, callback) {
 
 ajax_get('./service/log.json', function(log) {
 
-
     data.datasets[0].data = log[0].indications.measurements.rs;
     data.datasets[1].data = log[0].indications.measurements.rstr;
     data.datasets[2].data = log[0].indications.measurements.h2o;

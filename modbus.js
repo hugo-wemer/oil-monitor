@@ -2,9 +2,9 @@ const fs = require('fs')
 const ModbusRTU = require('modbus-serial')
 const client = new ModbusRTU()
 client.setID(5)
-client.connectRTUBuffered('/dev/ttyUSB1', { baudRate: 9600 })
+client.connectRTUBuffered('COM9', { baudRate: 9600 })
 
-const db = './log.json'
+const db = './service/log.json'
 const interval = 0.05 //intervalo entre amostras (minutos)
 
 setInterval(async function () {
@@ -74,6 +74,7 @@ setInterval(async function () {
       })
 
       fs.writeFile(db, JSON.stringify(dbData), (err, data) => {})
+
     })
   })
 }, 1000 * 60 * interval)
