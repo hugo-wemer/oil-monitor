@@ -1,38 +1,57 @@
 {
-
   "name": "oil-monitor",
-
   "version": "1.0.0",
-
   "description": "Oil monitor reader",
-
   "main": "main.js",
-
   "author": "Hugo Wemer and Daniel Savio",
-
   "license": "MIT",
-
+  "productName": "oil-monitor DH",
   "devDependencies": {
-
+    "@electron-forge/cli": "^6.0.0-beta.64",
+    "@electron-forge/maker-deb": "^6.0.0-beta.64",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.64",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.64",
+    "@electron-forge/maker-zip": "^6.0.0-beta.64",
     "electron": "^19.0.3"
-
   },
-
   "dependencies": {
-
     "chart.js": "^3.8.0",
-
+    "electron-packager": "^15.5.1",
     "electron-reloader": "^1.2.3",
-
     "modbus-serial": "^8.0.5"
-
   },
-
   "scripts": {
-
-    "start": "electron ."
-
+    "start": "electron .",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "",
+    "builder-installer": "electron-builder"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "cool_app"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   }
-
 }
-
