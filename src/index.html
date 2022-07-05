@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World!</title>
+    <link rel="stylesheet" href="index.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <h1>💖 CPU</h1>
+    <p>Welcome to your Electron application.</p>
+    <div class="chart-container" style="position: relative; height: 40vh; width:60vw;">
+      <canvas id="myChart"></canvas>
+  </div>
+  </body>
+  <script>
+    const electron = require('electron');
+    const ipcRenderer = electron.ipcRenderer;
+
+    ipcRenderer.on('cpu', (event, data) => {
+      //console.log('cpu % ' + data)
+      document.querySelector("p").innerHTML = data;
+    });
+    ipcRenderer.on('mem', (event, data) => {
+      //console.log('mem % ' + data)
+    });
+    ipcRenderer.on('total-mem', (event, data) => {
+      //console.log('total mem GB ' + data)
+    });
+  </script>
+</html>
+<script src="./chart.js"></script>
