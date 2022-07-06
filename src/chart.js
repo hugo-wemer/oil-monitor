@@ -1,5 +1,6 @@
+const { fstat } = require('fs')
 const path = require('path')
-
+const fs = require('fs')
 
 function labels() {
   let labelArray = []
@@ -11,14 +12,14 @@ function labels() {
 }
 let dataLabels = labels()
 
-const data = {
+let data = {
   labels: dataLabels,
   datasets: [
     {
       label: 'Relative saturation',
       backgroundColor: ['rgb(3, 219, 252)'],
       borderColor: 'rgb(3, 219, 252)',
-      data: "",
+      data: '',
       pointRadius: 0,
       borderWidth: 1.5,
       fill: false,
@@ -27,7 +28,7 @@ const data = {
       label: 'Relative saturation at reference temperature',
       backgroundColor: ['rgb(230, 124, 25)'],
       borderColor: 'rgb(230, 124, 25)',
-      data: "",
+      data: '',
       pointRadius: 0,
       borderWidth: 1.5,
       fill: false,
@@ -36,7 +37,7 @@ const data = {
       label: 'H2O',
       backgroundColor: ['rgb(0, 0, 255)'],
       borderColor: 'rgb(0, 0, 255)',
-      data: "",
+      data: '',
       pointRadius: 0,
       borderWidth: 1.5,
       fill: false,
@@ -45,7 +46,7 @@ const data = {
       label: 'Temperature',
       backgroundColor: ['rgb(255, 0, 255)'],
       borderColor: 'rgb(255, 0, 255)',
-      data: "",
+      data: '',
       pointRadius: 0,
       borderWidth: 1.5,
       fill: false,
@@ -53,7 +54,7 @@ const data = {
   ],
 }
 
-const config = {
+let config = {
   height: 5,
   type: 'line',
   data: data,
@@ -73,7 +74,7 @@ const config = {
     scales: {
       y: {
         min: 0,
-        max: 1500,
+        max: 100,
       },
       x: {
         grid: {
@@ -83,51 +84,29 @@ const config = {
     },
     plugins: {
       title: {
-          display: true,
-          text: 'Amostragem - MO'
-      }
-  }
+        display: true,
+        text: 'Amostragem - MO',
+      },
+    },
   },
 }
 
-function ajax_get(url, callback) {
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-          //console.log(xmlhttp.responseText);
-          try {
-              var data = JSON.parse(xmlhttp.responseText);
-          } catch(err) {
-              console.log(err.message + " in " + xmlhttp.responseText);
-              return;
-          }
-          callback(data);
-      }
-  };
+let log = []
 
-  xmlhttp.open("GET", url, true);
-  xmlhttp.send();
-}
+fs.readFile(path.join(__dirname, 'log.json'), 'utf8', (err, currentJSON) => {
+  let parsedJSON = JSON.parse(currentJSON)
 
-ajax_get(path.join(__dirname, 'log.json'), function(log) {
+  parsedJSON[0].indications.measurements.rs.forEach(function (data) {
+    log.push(data)
+  })
+})
 
-  // data.datasets[0].data = log[0].indications.measurements.rs;
-  // data.datasets[1].data = log[0].indications.measurements.rstr;
-  // data.datasets[2].data = log[0].indications.measurements.h2o;
-  // data.datasets[3].data = log[0].indications.measurements.temp;
-  data.datasets[0].data = log[0].indications.measurements.rs;
-  //const chart = new Chart(document.getElementById('myChart'), config)
-  //chart.destroy()
-});
+data.datasets[0].data = log
+let chart = new Chart(document.getElementById('myChart'), config)
 
 ipcRenderer.on('cpu', (event, value) => {
-  data.datasets[0].data = value
-  console.log(data.datasets[0].data)
-  //console.log(value[0].indications.measurements.rs)
-  const chart = new Chart(document.getElementById('myChart'), config)
-  setTimeout(()=>{console.log("Waiting")},1000)
+  data.datasets[0].data.push(value)
   chart.destroy()
-});
-
-
-
+  chart = new Chart(document.getElementById('myChart'), config)
+  console.log(config)
+})

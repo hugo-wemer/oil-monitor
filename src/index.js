@@ -39,7 +39,7 @@ const createWindow = () => {
       mainWindow.webContents.send('cpu', v*100);
 
     })
-  },1000)
+  },2000)
 
 }
 
